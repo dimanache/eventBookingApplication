@@ -54,7 +54,7 @@ I'd use a build tool like Maven for dependency management. Dependencies such as 
 Configuration settings for application properties, database settings, and other parameters would be set up in alignment with Spring Boot conventions.
 
 # **SWAGGER SAMPLE CODE**
-
+```
 openapi: 3.0.0
 info:
   title: Event Booking API
@@ -158,5 +158,4 @@ paths:
           description: Booking canceled
         '404':
           description: Event or booking not found
-
-  _**The code above does NOT look pretty, but in the editor it looks ready to be inserted in Swagger Editor.**_
+```
