@@ -22,7 +22,7 @@ Benefits:
 - Rigorous Testing: The use of Postman for testing guarantees that the API functions as expected, minimizing the chances of errors or disruptions.
 - Modern Interface: The React frontend will offer a contemporary and intuitive interface for clients, enhancing their overall experience.
 
-# **SECOND PART:**
+# SECOND PART
 - Entities:
 I'd start by creating Java classes to represent the entities, such as Event and Booking. These classes would have fields corresponding to the properties specified in the OpenAPI Specification, like id, name, date, and places for Event, and eventId, bookingId, and attendeeName for Booking.
 
