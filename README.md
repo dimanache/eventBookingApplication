@@ -62,26 +62,6 @@ info:
   version: 1.0.0
 
 paths:
-  /events:
-    get:
-      summary: Get a list of available events
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              example:
-                events:
-                  - id: 1
-                    name: "Awesome Event"
-                    date: "2023-12-01"
-                    places: "100"
-                  - id: 2
-                    name: "Super Fun Concert"
-                    date: "2023-12-15"
-                    places: "69"
-            
-
   /events/{eventId}/bookings:
     post:
       summary: Book a place at the event
@@ -106,14 +86,20 @@ paths:
         '404':
           description: Event not found
           
-  /events/{eventId}/putBooking:
+  /events/{eventId}/bookings/{bookingId}:
     put:
       summary: Update a booking
       parameters:
         - in: path
           name: eventId
           required: true
-          description: ID of the event to update
+          description: ID of the event
+          schema:
+            type: integer
+        - in: path
+          name: bookingId
+          required: true
+          description: ID of the booking to update
           schema:
             type: integer
         - in: query
@@ -135,11 +121,11 @@ paths:
         '400':
           description: Bad request
         '404':
-          description: Event not found
+          description: Event or booking not found
 
-  /events/{eventId}/deleteBooking:
+  /events/{eventId}/booking:
     delete:
-      summary: Delete all the events registered in the database. ADMIN ONLY!
+      summary: Delete all the bookings registered for an event. ADMIN ONLY!
       parameters:
         - in: path
           name: eventId
@@ -158,4 +144,174 @@ paths:
           description: Booking canceled
         '404':
           description: Event or booking not found
+
+  /event:
+    get:
+      summary: Get a list of available events
+      parameters:
+        - in: query
+          name: startDate
+          description: Filter events starting from this date (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: endDate
+          description: Filter events up to this date (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: minPlaces
+          description: Filter events with a minimum number of places
+          schema:
+            type: integer
+        - in: query
+          name: maxPlaces
+          description: Filter events with a maximum number of places
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                events:
+                  - id: 1
+                    name: "Awesome Event"
+                    date: "2023-12-01"
+                    places: "100"
+                  - id: 2
+                    name: "Super Fun Concert"
+                    date: "2023-12-15"
+                    places: "69"
+
+    post:
+      summary: Create a new event
+      parameters:
+        - in: query
+          name: additionalParam
+          description: Additional parameter for creating an event
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                date:
+                  type: string
+                  format: date
+                places:
+                  type: integer
+      responses:
+        '201':
+          description: Event created successfully
+        '400':
+          description: Bad request
+
+  /events/{eventId}:
+    get:
+      summary: Get details of a specific event
+      parameters:
+        - in: path
+          name: eventId
+          required: true
+          description: ID of the event
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                id: 1
+                name: "Awesome Event"
+                date: "2023-12-01"
+                places: "100"
+        '404':
+          description: Event not found
+
+    put:
+      summary: Update details of a specific event
+      parameters:
+        - in: path
+          name: eventId
+          required: true
+          description: ID of the event
+          schema:
+            type: integer
+        - in: query
+          name: additionalParam
+          description: Additional parameter for updating an event
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                date:
+                  type: string
+                  format: date
+                places:
+                  type: integer
+      responses:
+        '204':
+          description: Event updated successfully
+        '400':
+          description: Bad request
+        '404':
+          description: Event not found
+
+    delete:
+      summary: Delete a specific event. ADMIN ONLY!
+      parameters:
+        - in: path
+          name: eventId
+          required: true
+          description: ID of the event
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Event deleted
+        '404':
+          description: Event not found
+          
+components:
+  schemas:
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        date:
+          type: string
+          format: date
+        places:
+          type: integer
+
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+        eventId:
+          type: integer
+        attendeeName:
+          type: string
+        date:
+          type: string
+          format: date
 ```
