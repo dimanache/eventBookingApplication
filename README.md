@@ -315,3 +315,31 @@ components:
           type: string
           format: date
 ```
+# **ElasticSearch mapping**
+```
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        },
+        "analyzer": "standard"
+      },
+      "date": {
+        "type": "date",
+        "format": "yyyy-MM-dd"
+      },
+      "places": {
+        "type": "integer"
+      }
+    }
+  }
+}
+```
